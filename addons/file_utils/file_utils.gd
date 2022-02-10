@@ -30,13 +30,17 @@ static func as_json(path : String) -> Dictionary:
 
 
 # Returns an ImageTexture loaded from a file.
-static func as_texture(path : String) -> ImageTexture:
+static func as_texture(path : String) -> Texture:
+	if not exists(path):
+		return null
+	if ResourceLoader.has_cached(path) or\
+			ProjectSettings.localize_path(path).begins_with("res"):
+		return load(path) as Texture
 	var image := Image.new()
 	if image.load(path) != OK:
 		return null
 	var texture := ImageTexture.new()
-	if texture.create_from_image(image) != OK:
-		return null
+	texture.create_from_image(image)
 	texture.resource_path = path
 	return texture
 
@@ -55,7 +59,7 @@ static func write(path : String, text : String) -> int:
 # Returns true if the given path is either a folder or file.
 static func exists(path : String) -> bool:
 	var dir := Directory.new()
-	return dir.dir_exists(path) or dir.file_exists(path)
+	return path and dir.dir_exists(path) or dir.file_exists(path)
 
 
 # Returns a list of non-hidden files inside a given directory.
