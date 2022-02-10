@@ -37,6 +37,7 @@ static func as_texture(path : String) -> ImageTexture:
 	var texture := ImageTexture.new()
 	if texture.create_from_image(image) != OK:
 		return null
+	texture.resource_path = path
 	return texture
 
 
