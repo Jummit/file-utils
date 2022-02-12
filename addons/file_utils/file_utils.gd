@@ -77,6 +77,14 @@ static func list(path : String) -> Array:
 	return files
 
 
+# Returns an array of all loaded resources inside a folder.
+static func as_resources(path : String) -> Array:
+	var resources := []
+	for file in list(path):
+		resources.append(load(file))
+	return resources
+
+
 # Removes the content of a folder recursively.
 # Returns the error if any occured.
 # WARNING: This function cannot be undone. Be carefull!
